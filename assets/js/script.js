@@ -1,10 +1,8 @@
 var API = '5ec45324b97dfab94d81259ceb9c7461'
-var getIP = 'http://ip-api.com/json/'
-var openWeatherMapURL = 'http://api.openweathermap.org/data/2.5/weather'
+var ipAPIUrl = 'https://ipapi.co/json/'
+var openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather'
 var openWeatherUV = 'https://api.openweathermap.org/data/2.5/uvi?'
 var locationInput
-var cityLat
-var cityLon
 var timestamp
 
 function timeFormat(timestamp){
@@ -46,12 +44,10 @@ function weatherSearch(locationInput) {
           $("#weather_wind").append('Wind: '+weather.wind.speed)
           timestamp = weather.dt
           $("#weather_date").append('Updated: ' + timeFormat(timestamp))
-          cityLat = weather.coord.lat
-          cityLon = weather.coord.lon
           //console.log('Lat: '+cityLat+', Lon: '+cityLon)
           $.getJSON(openWeatherUV, { // UV Index
-            lat: cityLat,
-            lon: cityLon,
+            lat: weather.coord.lat,
+            lon: weather.coord.lon,
             units: 'imperial',
             APPID: API
           }).done(function(uv) {
@@ -77,7 +73,8 @@ function weatherSearch(locationInput) {
         timestamp = weather.dt
         $("#weather_date").append('Updated: '+timeFormat(timestamp))
         $.getJSON(openWeatherUV, { // UV Index
-          q: locationInput,
+          lat: weather.coord.lat,
+          lon: weather.coord.lon,
           units: 'imperial',
           APPID: API
         }).done(function(uv) {
@@ -86,13 +83,13 @@ function weatherSearch(locationInput) {
       })
     }
   } else {
-    console.log(locationInput+' : Showing by IP location')
-    $.getJSON(getIP).done(function(location) {
-      console.log('Lat: '+location.lat+', Lon: '+location.lon)
+    console.log(locationInput+' Showing by IP location')
+    $.getJSON(ipAPIUrl).done(function(location) {
+      console.log('IP: '+location.ip)
+      console.log('City: '+location.city)
       clearWeather()
       $.getJSON(openWeatherMapURL, {
-        lat: location.lat,
-        lon: location.lon,
+        q: location.city,
         units: 'imperial',
         APPID: API
       }).done(function(weather) {
@@ -105,8 +102,8 @@ function weatherSearch(locationInput) {
         timestamp = weather.dt
         $("#weather_date").append('Updated: '+timeFormat(timestamp))
         $.getJSON(openWeatherUV, { // UV Index
-          lat: location.lat,
-          lon: location.lon,
+          lat: weather.coord.lat,
+          lon: weather.coord.lon,
           units: 'imperial',
           APPID: API
         }).done(function(uv) {

@@ -37,7 +37,7 @@ function weatherSearch(locationInput) {
           APPID: API
         }).done(function(weather) {
           //console.log(weather)
-          $("#weather_city").append('<h3>'+weather.name+'</h3>')
+          $("#weather_city").append('<h5 class="flow-text">'+weather.name+'</h5>')
           $("#weather_image").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
           $("#weather_temp").append(weather.main.temp+'° F')
           $("#weather_humidity").append('Humidity: '+weather.main.humidity)
@@ -65,7 +65,7 @@ function weatherSearch(locationInput) {
         APPID: API
       }).done(function(weather) {
         //console.log(weather)
-        $("#weather_city").append('<h3>'+weather.name+'</h3>')
+        $("#weather_city").append('<h5 class="flow-text">'+weather.name+'</h5>')
         $("#weather_image").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp").append(weather.main.temp+'° F')
         $("#weather_humidity").append('Humidity: '+weather.main.humidity)
@@ -94,7 +94,7 @@ function weatherSearch(locationInput) {
         APPID: API
       }).done(function(weather) {
         //console.log(weather)
-        $("#weather_city").append('<h3>'+weather.name+'</h3>')
+        $("#weather_city").append('<h5 class="flow-text">'+weather.name+'</h5>')
         $("#weather_image").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp").append(weather.main.temp+'° F')
         $("#weather_humidity").append('Humidity: '+weather.main.humidity)
@@ -129,8 +129,35 @@ $(document).ready(function(){
   $("#searchButton").click(function(event){
     event.preventDefault()
     locationInput = $.trim($("#searchInput").val())
-    
     //console.log(locationInput)
     weatherSearch(locationInput)
+  })
+  // Get the weather by IP on page load
+  $.getJSON(ipAPIUrl).done(function(location) {
+    console.log('IP: '+location.ip)
+    console.log('City: '+location.city)
+    clearWeather()
+    $.getJSON(openWeatherMapURL, {
+      q: location.city,
+      units: 'imperial',
+      APPID: API
+    }).done(function(weather) {
+      //console.log(weather)
+      $("#weather_city").append('<h5 class="flow-text">'+weather.name+'</h5>')
+      $("#weather_image").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
+      $("#weather_temp").append(weather.main.temp+'° F')
+      $("#weather_humidity").append('Humidity: '+weather.main.humidity)
+      $("#weather_wind").append('Wind: '+weather.wind.speed)
+      timestamp = weather.dt
+      $("#weather_date").append('Updated: '+timeFormat(timestamp))
+      $.getJSON(openWeatherUV, { // UV Index
+        lat: weather.coord.lat,
+        lon: weather.coord.lon,
+        units: 'imperial',
+        APPID: API
+      }).done(function(uv) {
+        $("#weather_uv").append('UV Index: '+uv.value)
+      })
+    })
   })
 })

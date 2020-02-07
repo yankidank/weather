@@ -3,45 +3,114 @@
 <head>
 	<title>Weather Tracker</title>
 	<meta charset="UTF-8">
-	<link href="https://fonts.googleapis.com/css?family=Lato%7CNanum+Myeongjo&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons%7CLato%7CNanum+Myeongjo&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 	<link href="./assets/css/style.css" rel="stylesheet" />
 </head>
 <body class="site">
-	<nav class="site_header">
-		<div class="nav_wrapper">
-			<div class="nav_content">
-				<h3>Weather Tracker</h3>
+	<nav>
+		<div class="nav-wrapper container">
+		  <form>
+			<div class="input-field">
+			  <input type="search" id="searchInput" placeholder="Enter your City or ZIP code" required >
+			  <label class="label-icon" for="search"><i class="material-icons" id="searchButton">search</i></label>
+			  <i class="material-icons">close</i>
 			</div>
+		  </form>
 		</div>
 	</nav>
-	<main class="site_content">
-		<div class="main_wrapper">
-			<div class="main_content">
-				<div id="search_wrapper">
-					<input type="text" id="searchInput" placeholder="City/Zip" />
-					<button id="searchButton">Search</button>
+	<div id="index-banner" class="parallax-container weather-container">
+		<div class="section no-pad-bot">
+			<div class="container">
+				<div class="row center">
+					<div class="col s3">
+						<div class="weather-wrapper-current" id="weather">
+							<h4 class="flow-text">Current</h4>
+							<div id="weather_city"></div>
+							<div id="weather_image" class="responsive-img"></div>
+							<div id="weather_temp"></div>
+							<div id="weather_humidity"></div>
+							<div id="weather_wind"></div>
+							<div id="weather_uv"></div>
+							<div id="weather_date"></div>
+						</div>
+					</div>
+					<div class="col s9">
+						<div class="row">
+							<div class="col s2 forecast">
+								<h4 class="flow-text">Forecast</h4>
+							</div>
+							<div class="col s2">
+								<div class="weather-wrapper" id="weather_day1">
+									<div id="weather_city_day1"></div>
+									<div id="weather_image_day1" class="responsive-img"></div>
+									<div id="weather_temp_day1"></div>
+									<div id="weather_humidity_day1"></div>
+									<div id="weather_wind_day1"></div>
+									<div id="weather_uv_day1"></div>
+									<div id="weather_date_day1"></div>
+								</div>
+							</div>
+							<div class="col s2">
+								<div class="weather-wrapper" id="weather_day2">
+									<div id="weather_city_day2"></div>
+									<div id="weather_image_day2" class="responsive-img"></div>
+									<div id="weather_temp_day2"></div>
+									<div id="weather_humidity_day2"></div>
+									<div id="weather_wind_day2"></div>
+									<div id="weather_uv_day2"></div>
+									<div id="weather_date_day2"></div>
+								</div>
+							</div>
+							<div class="col s2">
+								<div class="weather-wrapper" id="weather_day3">
+									<div id="weather_city_day3"></div>
+									<div id="weather_image_day3" class="responsive-img"></div>
+									<div id="weather_temp_day3"></div>
+									<div id="weather_humidity_day3"></div>
+									<div id="weather_wind_day3"></div>
+									<div id="weather_uv_day3"></div>
+									<div id="weather_date_day3"></div>
+								</div>
+							</div>
+							<div class="col s2">
+								<div class="weather-wrapper" id="weather_day4">
+									<div id="weather_city_day4"></div>
+									<div id="weather_image_day4" class="responsive-img"></div>
+									<div id="weather_temp_day4"></div>
+									<div id="weather_humidity_day4"></div>
+									<div id="weather_wind_day4"></div>
+									<div id="weather_uv_day4"></div>
+									<div id="weather_date_day4"></div>
+								</div>
+							</div>
+							<div class="col s2">
+								<div class="weather-wrapper" id="weather_day5">
+									<div id="weather_city_day5"></div>
+									<div id="weather_image_day5" class="responsive-img"></div>
+									<div id="weather_temp_day5"></div>
+									<div id="weather_humidity_day5"></div>
+									<div id="weather_wind_day5"></div>
+									<div id="weather_uv_day5"></div>
+									<div id="weather_date_day5"></div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div id="weather">
-					<div id="weather_city"></div>
-					<div id="weather_image"></div>
-					<div id="weather_temp"></div>
-					<div id="weather_humidity"></div>
-					<div id="weather_wind"></div>
-					<div id="weather_uv"></div>
-					<div id="weather_date"></div>
-				</div>
-				<div class="clear"></div>
 			</div>
 		</div>
-	</main>
-	<div class="clear"></div>
-	<footer class="site_footer">
-		<div class="footer_wrapper">
-			<a href="https://github.com/yankidank/weather" target="_blank">Github</a>
+		<div class="parallax" id="weatherBG"><img src="./assets/img/window_rain.jpg" alt="" style="transform: translate3d(-50%, 341.231px, 0px); opacity: 0.2;"></div>
+	</div>
+	<footer class="page-footer">
+		<div class="footer-copyright">
+			<div class="container">
+				<a href="https://github.com/yankidank/weather" target="_blank">Github</a>
+			</div>
 		</div>
-		<div class="clear"></div>
 	</footer>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	<script src="./assets/js/script.js"></script>
 </body>
 </html>

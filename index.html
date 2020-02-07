@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Daily Agenda</title>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Lato%7CNanum+Myeongjo&display=swap" rel="stylesheet">
+	<link href="./assets/css/style.css" rel="stylesheet" />
+</head>
+<body class="site">
+	<nav class="site_header">
+		<div class="nav_wrapper">
+			<div class="nav_content">
+				<h3>Weather Tracker</h3>
+			</div>
+		</div>
+	</nav>
+	<main class="site_content">
+		<div class="main_wrapper">
+			<div class="main_content">
+				<div id="search_wrapper">
+					<input type="text" id="searchInput" placeholder="City/Zip" />
+					<button id="searchButton">Search</button>
+				</div>
+				<div id="weather">
+					<div id="weather_city"></div>
+					<div id="weather_image"></div>
+					<div id="weather_temp"></div>
+					<div id="weather_humidity"></div>
+					<div id="weather_wind"></div>
+					<div id="weather_uv"></div>
+					<div id="weather_date"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</main>
+	<div class="clear"></div>
+	<footer class="site_footer">
+		<div class="footer_wrapper">
+			<a href="https://github.com/yankidank" target="_blank">Github</a>
+		</div>
+		<div class="clear"></div>
+	</footer>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="./assets/js/script.js"></script>
+</body>
+</html>

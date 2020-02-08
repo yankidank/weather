@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 	<link href="./assets/css/style.css" rel="stylesheet" />
 </head>
-<body class="site">
+<body>
 	<nav>
 		<div class="nav-wrapper container">
 		  <form>
@@ -19,194 +19,83 @@
 		  </form>
 		</div>
 	</nav>
-	<div id="index-banner" class="parallax-container weather-container">
+	<div class="parallax-container">
 		<div class="section no-pad-bot">
 			<div class="container">
 				<div class="row center">
 					<div class="col s12">
 						<div class="weather-wrapper-current">
-							<table>
-								<tbody>
-									<tr>
-										<td class="weather_city" id="weather_city_current"></td>
-									</tr>
-									<tr>
-										<td id="weather_image_current" class="responsive-img weather_image"></td>
-									</tr>
-									<tr>
-										<td class="weather_temp" id="weather_temp_current"></td>
-									</tr>
-									<tr>
-										<td class="weather_humidity" id="weather_humidity_current"></td>
-									</tr>
-									<tr>
-										<td class="weather_wind" id="weather_wind_current"></td>
-									</tr>
-									<tr>
-										<td class="weather_uv" id="weather_uv_current"></td>
-									</tr>
-									<tr>
-										<td class="weather_date" id="weather_date_current"></td>
-									</tr>
-								</tbody>
-							</table>
+							<div class="weather_city" id="weather_city_current"></div>
+							<div id="weather_image_current" class="responsive-img weather_image"></div>
+							<div class="weather_temp" id="weather_temp_current"></div>
+							<div class="weather_humidity" id="weather_humidity_current"></div>
+							<div class="weather_wind" id="weather_wind_current"></div>
+							<div class="weather_uv" id="weather_uv_current"></div>
+							<div class="weather_date" id="weather_date_current"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="parallax" id="weatherBG"><img src="./assets/img/window_rain.jpg" alt="" style="transform: translate3d(-50%, 341.231px, 0px); opacity: 0.2;"></div>
+		<div class="parallax" id="weatherBG">
+			<img src="./assets/img/window_rain.jpg" alt="" style="transform: translate3d(-50%, 341.231px, 0px); opacity: 0.2;">
+		</div>
 	</div>
-	<div id="forecast-container" class="container">
-		<div class="section">
-			<div class="row valign-wrapper">
-				<div class="col s2">
-					<h4 class="flow-text">5 Day Forecast</h4>
+	<div class="container">
+		<div class="row forecast-row">
+			<div class="col s4 m4 l2">
+				<div class="container">
+					<h4 class="flow-text forecast-title">5 Day Forecast</h4>
 				</div>
-				<div class="col s2">
-					<div class="weather-wrapper-forecast">
-						<table>
-							<tbody>
-								<tr>
-									<td class="weather_city" id="weather_city_day1"></td>
-								</tr>
-								<tr>
-									<td id="weather_image_day1" class="responsive-img weather_image"></td>
-								</tr>
-								<tr>
-									<td class="weather_temp" id="weather_temp_day1"></td>
-								</tr>
-								<tr>
-									<td class="weather_humidity" id="weather_humidity_day1"></td>
-								</tr>
-								<tr>
-									<td class="weather_wind" id="weather_wind_day1"></td>
-								</tr>
-								<tr>
-									<td class="weather_uv" id="weather_uv_day1"></td>
-								</tr>
-								<tr>
-									<td class="weather_date" id="weather_date_day1"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="col s4 m4 l2">
+				<div class="container weather-wrapper-forecast">
+					<div id="weather_image_day1" class="responsive-img weather_image"></div>
+					<div class="weather_temp" id="weather_temp_day1"></div>
+					<div class="weather_humidity" id="weather_humidity_day1"></div>
+					<div class="weather_wind" id="weather_wind_day1"></div>
+					<div class="weather_uv" id="weather_uv_day1"></div>
+					<div class="weather_date" id="weather_date_day1"></div>
 				</div>
-				<div class="col s2">
-					<div class="weather-wrapper-forecast">
-						<table>
-							<tbody>
-								<tr>
-									<td class="weather_city" id="weather_city_day2"></td>
-								</tr>
-								<tr>
-									<td id="weather_image_day2" class="responsive-img weather_image"></td>
-								</tr>
-								<tr>
-									<td class="weather_temp" id="weather_temp_day2"></td>
-								</tr>
-								<tr>
-									<td class="weather_humidity" id="weather_humidity_day2"></td>
-								</tr>
-								<tr>
-									<td class="weather_wind" id="weather_wind_day2"></td>
-								</tr>
-								<tr>
-									<td class="weather_uv" id="weather_uv_day2"></td>
-								</tr>
-								<tr>
-									<td class="weather_date" id="weather_date_day2"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="col s4 m4 l2">
+				<div class="container weather-wrapper-forecast z-depth-1">
+					<div id="weather_image_day2" class="responsive-img weather_image"></div>
+					<div class="weather_temp" id="weather_temp_day2"></div>
+					<div class="weather_humidity" id="weather_humidity_day2"></div>
+					<div class="weather_wind" id="weather_wind_day2"></div>
+					<div class="weather_uv" id="weather_uv_day2"></div>
+					<div class="weather_date" id="weather_date_day2"></div>
 				</div>
-				<div class="col s2">
-					<div class="weather-wrapper-forecast">
-						<table>
-							<tbody>
-								<tr>
-									<td class="weather_city" id="weather_city_day3"></td>
-								</tr>
-								<tr>
-									<td id="weather_image_day3" class="responsive-img weather_image"></td>
-								</tr>
-								<tr>
-									<td class="weather_temp" id="weather_temp_day3"></td>
-								</tr>
-								<tr>
-									<td class="weather_humidity" id="weather_humidity_day3"></td>
-								</tr>
-								<tr>
-									<td class="weather_wind" id="weather_wind_day3"></td>
-								</tr>
-								<tr>
-									<td class="weather_uv" id="weather_uv_day3"></td>
-								</tr>
-								<tr>
-									<td class="weather_date" id="weather_date_day3"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="col s4 m4 l2">
+				<div class="container weather-wrapper-forecast z-depth-2">
+					<div id="weather_image_day3" class="responsive-img weather_image"></div>
+					<div class="weather_temp" id="weather_temp_day3"></div>
+					<div class="weather_humidity" id="weather_humidity_day3"></div>
+					<div class="weather_wind" id="weather_wind_day3"></div>
+					<div class="weather_uv" id="weather_uv_day3"></div>
+					<div class="weather_date" id="weather_date_day3"></div>
 				</div>
-				<div class="col s2">
-					<div class="weather-wrapper-forecast">
-						<table>
-							<tbody>
-								<tr>
-									<td class="weather_city" id="weather_city_day4"></td>
-								</tr>
-								<tr>
-									<td id="weather_image_day4" class="responsive-img weather_image"></td>
-								</tr>
-								<tr>
-									<td class="weather_temp" id="weather_temp_day4"></td>
-								</tr>
-								<tr>
-									<td class="weather_humidity" id="weather_humidity_day4"></td>
-								</tr>
-								<tr>
-									<td class="weather_wind" id="weather_wind_day4"></td>
-								</tr>
-								<tr>
-									<td class="weather_uv" id="weather_uv_day4"></td>
-								</tr>
-								<tr>
-									<td class="weather_date" id="weather_date_day4"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="col s4 m4 l2">
+				<div class="container weather-wrapper-forecast z-depth-3">
+					<div id="weather_image_day4" class="responsive-img weather_image"></div>
+					<div class="weather_temp" id="weather_temp_day4"></div>
+					<div class="weather_humidity" id="weather_humidity_day4"></div>
+					<div class="weather_wind" id="weather_wind_day4"></div>
+					<div class="weather_uv" id="weather_uv_day4"></div>
+					<div class="weather_date" id="weather_date_day4"></div>
 				</div>
-				<div class="col s2">
-					<div class="weather-wrapper-forecast">
-						<table>
-							<tbody>
-								<tr>
-									<td class="weather_city" id="weather_city_day5"></td>
-								</tr>
-								<tr>
-									<td id="weather_image_day5" class="responsive-img weather_image"></td>
-								</tr>
-								<tr>
-									<td class="weather_temp" id="weather_temp_day5"></td>
-								</tr>
-								<tr>
-									<td class="weather_humidity" id="weather_humidity_day5"></td>
-								</tr>
-								<tr>
-									<td class="weather_wind" id="weather_wind_day5"></td>
-								</tr>
-								<tr>
-									<td class="weather_uv" id="weather_uv_day5"></td>
-								</tr>
-								<tr>
-									<td class="weather_date" id="weather_date_day5"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+			</div>
+			<div class="col s4 m4 l2">
+				<div class="container weather-wrapper-forecast z-depth-4">
+					<div id="weather_image_day5" class="responsive-img weather_image"></div>
+					<div class="weather_temp" id="weather_temp_day5"></div>
+					<div class="weather_humidity" id="weather_humidity_day5"></div>
+					<div class="weather_wind" id="weather_wind_day5"></div>
+					<div class="weather_uv" id="weather_uv_day5"></div>
+					<div class="weather_date" id="weather_date_day5"></div>
 				</div>
 			</div>
 		</div>

@@ -43,7 +43,7 @@ function weatherSearch(locationInput) {
           APPID: API
         }).done(function(weather) {
           //console.log(weather)
-          $("#weather_city_current").append('<h4>'+weather.name+'</h4>')
+          $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
           $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
           $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
           $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
@@ -80,7 +80,7 @@ function weatherSearch(locationInput) {
         APPID: API
       }).done(function(weather) {
         //console.log(weather)
-        $("#weather_city_current").append('<h4>'+weather.name+'</h4>')
+        $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
         $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
@@ -118,7 +118,7 @@ function weatherSearch(locationInput) {
         APPID: API
       }).done(function(weather) {
         //console.log(weather)
-        $("#weather_city_current").append('<h4>'+weather.name+'</h4>')
+        $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
         $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
@@ -186,7 +186,7 @@ $(document).ready(function(){
       APPID: API
     }).done(function(weather) {
       //console.log(weather)
-      $("#weather_city_current").append('<h4>'+weather.name+'</h4>')
+      $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
       $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
       $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
       $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)

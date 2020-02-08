@@ -7,10 +7,23 @@ nav {
 }
 #weather_temp_current h4 {
 	font-size:2.8rem;
+	font-weight:600;
+	padding-left: 14px;
+}
+.weather-wrapper-current {
+	color:#fff;
+}
+.weather-wrapper-forecast {
+	text-align: center;
 }
 h4 {
 	font-size:1.8rem;
 	margin-top:0;
+}
+h2 {
+	font-size:2.8rem;
+	font-weight:600;
+	margin:30px 0 10px 0;
 }
 h5 {
 	margin-bottom:0;
@@ -31,15 +44,31 @@ td {
 #weather_city_current h4 {
 	margin-top:24px;
 }
+.weather_humidity,.weather_wind,.weather_uv,.weather_date {
+	font-size:0.9rem;
+}
 #forecast-container {
 	margin-bottom:20px;
 }
 .forecast h4 {
 	text-align:center;
 }
+.forecast-title {
+	padding:75px 0 75px 0;
+}
 .temp_unit {
 	font-size:1rem;
 	vertical-align: super;
+}
+.weather-wrapper-forecast {
+	padding:0 0 15px 0;
+}
+.weather-wrapper-forecast div h4 {
+	font-size:1.7rem;
+}
+.forecast-row {
+	padding-top:25px;
+	padding-bottom:5px;
 }
 .page-footer {
 	text-align:center;

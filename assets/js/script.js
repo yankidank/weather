@@ -49,8 +49,7 @@ function weatherSearch(locationInput) {
           $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
           $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
           timestamp = weather.dt
-          //$("#weather_date_current").append('Updated: ' + timeFormat(timestamp))
-          //console.log('Lat: '+cityLat+', Lon: '+cityLon)
+          $("#weather_date_current").append('Updated: ' + timeFormat(timestamp))
           $.getJSON(openWeatherUV, { // UV Index
             lat: weather.coord.lat,
             lon: weather.coord.lon,
@@ -86,7 +85,7 @@ function weatherSearch(locationInput) {
         $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
         $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
         timestamp = weather.dt
-        //$("#weather_date_current").append('Updated: '+timeFormat(timestamp))
+        $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
         $.getJSON(openWeatherUV, { // UV Index
           lat: weather.coord.lat,
           lon: weather.coord.lon,
@@ -124,7 +123,7 @@ function weatherSearch(locationInput) {
         $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
         $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
         timestamp = weather.dt
-        //$("#weather_date_current").append('Updated: '+timeFormat(timestamp))
+        $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
         $.getJSON(openWeatherUV, { // UV Index
           lat: weather.coord.lat,
           lon: weather.coord.lon,
@@ -192,7 +191,7 @@ $(document).ready(function(){
       $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
       $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
       timestamp = weather.dt
-      $("#weather_date_current").append('<span class="last-updated">Updated '+timeFormat(timestamp)+'</span>')
+      $("#weather_date_current").append('Updated '+timeFormat(timestamp))
       $.getJSON(openWeatherUV, { // UV Index
         lat: weather.coord.lat,
         lon: weather.coord.lon,

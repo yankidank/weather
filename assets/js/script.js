@@ -45,11 +45,11 @@ function weatherSearch(locationInput) {
           //console.log(weather)
           $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
           $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
-          $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
-          $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
-          $("#weather_wind_current").append('Wind: '+weather.wind.speed)
+          $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
+          $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+          $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
           timestamp = weather.dt
-          $("#weather_date_current").append('Updated: ' + timeFormat(timestamp))
+          //$("#weather_date_current").append('Updated: ' + timeFormat(timestamp))
           //console.log('Lat: '+cityLat+', Lon: '+cityLon)
           $.getJSON(openWeatherUV, { // UV Index
             lat: weather.coord.lat,
@@ -57,7 +57,7 @@ function weatherSearch(locationInput) {
             units: 'imperial',
             APPID: API
           }).done(function(uv) {
-            $("#weather_uv_current").append('UV Index: '+uv.value)
+            $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
           })
           $.getJSON(openWeatherForecast, { // 5 day Forecast
             lat: weather.coord.lat,
@@ -82,18 +82,18 @@ function weatherSearch(locationInput) {
         //console.log(weather)
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
-        $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
-        $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
-        $("#weather_wind_current").append('Wind: '+weather.wind.speed)
+        $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
+        $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+        $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
         timestamp = weather.dt
-        $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
+        //$("#weather_date_current").append('Updated: '+timeFormat(timestamp))
         $.getJSON(openWeatherUV, { // UV Index
           lat: weather.coord.lat,
           lon: weather.coord.lon,
           units: 'imperial',
           APPID: API
         }).done(function(uv) {
-          $("#weather_uv_current").append('UV Index: '+uv.value)
+          $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
         })
         $.getJSON(openWeatherForecast, { // 5 day Forecast
           lat: weather.coord.lat,
@@ -120,18 +120,18 @@ function weatherSearch(locationInput) {
         //console.log(weather)
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
-        $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
-        $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
-        $("#weather_wind_current").append('Wind: '+weather.wind.speed)
+        $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
+        $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+        $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
         timestamp = weather.dt
-        $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
+        //$("#weather_date_current").append('Updated: '+timeFormat(timestamp))
         $.getJSON(openWeatherUV, { // UV Index
           lat: weather.coord.lat,
           lon: weather.coord.lon,
           units: 'imperial',
           APPID: API
         }).done(function(uv) {
-          $("#weather_uv_current").append('UV Index: '+uv.value)
+          $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
         })
         $.getJSON(openWeatherForecast, { // 5 day Forecast
           lat: weather.coord.lat,
@@ -147,14 +147,14 @@ function weatherSearch(locationInput) {
   }
 }
 function renderDay(item, index){
-  console.log(item)
+  //Wconsole.log(item)
 
   $("#weather_image_day"+index).append('<img src="https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png" />')
-  $("#weather_temp_day"+index).append('<h4>'+item.main.temp+'<span class="temp_unit">° F</span></h4>')
-  $("#weather_humidity_day"+index).append('Humidity: '+item.main.humidity)
-  $("#weather_wind_day"+index).append('Wind: '+item.wind.speed)
+  $("#weather_temp_day"+index).append('<h4>'+Math.round(item.main.temp)+'<span class="temp_unit">° F</span></h4>')
+  $("#weather_humidity_day"+index).append(item.main.humidity+'% Humidity')
+  $("#weather_wind_day"+index).append(Math.round(item.wind.speed)+' mph winds')
   timestamp = item.dt_txt
-  $("#weather_date_day"+index).append(''+ timestamp.slice(0, 10))
+  //$("#weather_date_day"+index).append(''+ timestamp.slice(0, 10))
 
 }
 $(document).ready(function(){
@@ -188,18 +188,18 @@ $(document).ready(function(){
       //console.log(weather)
       $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
       $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
-      $("#weather_temp_current").append('<h4>'+weather.main.temp+'<span class="temp_unit">° F</span></h4>')
-      $("#weather_humidity_current").append('Humidity: '+weather.main.humidity)
-      $("#weather_wind_current").append('Wind: '+weather.wind.speed)
+      $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
+      $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+      $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
       timestamp = weather.dt
-      $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
+      $("#weather_date_current").append('<span class="last-updated">Updated '+timeFormat(timestamp)+'</span>')
       $.getJSON(openWeatherUV, { // UV Index
         lat: weather.coord.lat,
         lon: weather.coord.lon,
         units: 'imperial',
         APPID: API
       }).done(function(uv) {
-        $("#weather_uv_current").append('UV Index: '+uv.value)
+        $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
       })
       $.getJSON(openWeatherForecast, { // 5 day Forecast
         lat: weather.coord.lat,

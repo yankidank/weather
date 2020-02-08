@@ -6,14 +6,18 @@ nav {
 	background:#3d3d3d;
 }
 #weather_temp_current h4 {
-	font-size:2.8rem;
+	font-size:3.8rem;
 	font-weight:600;
 	padding-left: 14px;
+}
+.weather_temp h4{
+	padding-left: 8px;
 }
 .weather-wrapper-current {
 	color:#fff;
 }
 .weather-wrapper-forecast {
+	width:90%;
 	text-align: center;
 }
 h4 {
@@ -28,9 +32,9 @@ h2 {
 h5 {
 	margin-bottom:0;
 }
-td {
-	padding:0;
-	text-align:center;
+.icon {
+	height:14px;
+	width:14px;
 }
 #weatherBG {
 	background:#000;
@@ -45,7 +49,7 @@ td {
 	margin-top:24px;
 }
 .weather_humidity,.weather_wind,.weather_uv,.weather_date {
-	font-size:0.9rem;
+	font-size:1rem;
 }
 #forecast-container {
 	margin-bottom:20px;
@@ -54,7 +58,17 @@ td {
 	text-align:center;
 }
 .forecast-title {
-	padding:75px 0 75px 0;
+	font-weight: 300;
+	padding:125px 0;
+	text-align: center;
+}
+.last-updated {
+	color:#8b8a8a;
+}
+.day_of_week {
+	font-weight:500;
+	padding-top:10px;
+	font-size:1.3rem;
 }
 .temp_unit {
 	font-size:1rem;
@@ -62,13 +76,14 @@ td {
 }
 .weather-wrapper-forecast {
 	padding:0 0 15px 0;
+	margin-bottom:50px;
 }
 .weather-wrapper-forecast div h4 {
-	font-size:1.7rem;
+	font-size:3.6rem;
 }
 .forecast-row {
-	padding-top:25px;
-	padding-bottom:5px;
+	padding-top:40px;
+	margin-bottom:0;
 }
 .page-footer {
 	text-align:center;

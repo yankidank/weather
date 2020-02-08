@@ -1,9 +1,13 @@
 body {
+	font-size:1.2rem;
 	color:#31404b;
 	background:rgb(233, 233, 233);
 }
 nav {
 	background:#3d3d3d;
+}
+#weather_image_current img {
+	
 }
 #weather_temp_current h4 {
 	font-size:3.8rem;
@@ -13,11 +17,15 @@ nav {
 .weather_temp h4{
 	padding-left: 8px;
 }
+#weather_city_current h2 {
+	text-shadow: 3px 2px 6px rgba(0, 0, 0, 0.96);
+}
 .weather-wrapper-current {
 	color:#fff;
 }
 .weather-wrapper-forecast {
 	width:90%;
+	margin:0 auto;
 	text-align: center;
 }
 h4 {
@@ -25,7 +33,7 @@ h4 {
 	margin-top:0;
 }
 h2 {
-	font-size:2.8rem;
+	font-size:2.4rem;
 	font-weight:600;
 	margin:30px 0 10px 0;
 }
@@ -49,7 +57,7 @@ h5 {
 	margin-top:24px;
 }
 .weather_humidity,.weather_wind,.weather_uv,.weather_date {
-	font-size:1rem;
+	
 }
 #forecast-container {
 	margin-bottom:20px;
@@ -68,18 +76,18 @@ h5 {
 .day_of_week {
 	font-weight:500;
 	padding-top:10px;
-	font-size:1.3rem;
+	font-size:1.45rem;
 }
 .temp_unit {
 	font-size:1rem;
 	vertical-align: super;
 }
 .weather-wrapper-forecast {
-	padding:0 0 15px 0;
-	margin-bottom:50px;
+	padding:0 0 40px 0;
+	margin-bottom:45px;
 }
 .weather-wrapper-forecast div h4 {
-	font-size:3.6rem;
+	font-size:2.6rem;
 }
 .forecast-row {
 	padding-top:40px;

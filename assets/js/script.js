@@ -11,10 +11,14 @@ function timeFormat(timestamp){
   var month = timestamp.getMonth() // coming back as 1 instead of 2 ?
   var date = timestamp.getDate()
   var hours = timestamp.getHours()
+  if (hours > 12){
+    var AMPM = 'PM'
+    hours = hours-12
+  } else {
+    var AMPM = 'AM'
+  }
   var minutes = "0" + timestamp.getMinutes()
-  var seconds = "0" + timestamp.getSeconds()
-  //return '' + month + ' / ' + date + ' at ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)
-  return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)
+  return hours + ':' + minutes.substr(-2) + ' ' + AMPM
 }
 function dayFormat(timestamp){
   
@@ -46,7 +50,7 @@ function weatherSearch(locationInput) {
           $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
           $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
           $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
-          $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+          $("#weather_humidity_current").append(Math.round(weather.main.humidity)+'% Humidity')
           $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
           timestamp = weather.dt
           $("#weather_date_current").append('Updated: ' + timeFormat(timestamp))
@@ -82,7 +86,7 @@ function weatherSearch(locationInput) {
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
-        $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+        $("#weather_humidity_current").append(Math.round(weather.main.humidity)+'% Humidity')
         $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
         timestamp = weather.dt
         $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
@@ -120,7 +124,7 @@ function weatherSearch(locationInput) {
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
-        $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+        $("#weather_humidity_current").append(Math.round(weather.main.humidity)+'% Humidity')
         $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
         timestamp = weather.dt
         $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
@@ -150,7 +154,7 @@ function renderDay(item, index){
 
   $("#weather_image_day"+index).append('<img src="https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png" />')
   $("#weather_temp_day"+index).append('<h4>'+Math.round(item.main.temp)+'<span class="temp_unit">° F</span></h4>')
-  $("#weather_humidity_day"+index).append(item.main.humidity+'% Humidity')
+  $("#weather_humidity_day"+index).append(Math.round(item.main.humidity)+'% Humidity')
   $("#weather_wind_day"+index).append(Math.round(item.wind.speed)+' mph winds')
   timestamp = item.dt_txt
   //$("#weather_date_day"+index).append(''+ timestamp.slice(0, 10))
@@ -188,7 +192,7 @@ $(document).ready(function(){
       $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
       $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
       $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
-      $("#weather_humidity_current").append(weather.main.humidity+'% Humidity')
+      $("#weather_humidity_current").append(Math.round(weather.main.humidity)+'% Humidity')
       $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
       timestamp = weather.dt
       $("#weather_date_current").append('Updated '+timeFormat(timestamp))

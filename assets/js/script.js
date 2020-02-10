@@ -161,13 +161,30 @@ function weatherSearch(locationInput) {
     })
   }
 }
+function dayOfWeek(i){
+  var day=new Date();
+  var weekday=new Array(7);
+  weekday[0]="Sunday";
+  weekday[1]="Monday";
+  weekday[2]="Tuesday";
+  weekday[3]="Wednesday";
+  weekday[4]="Thursday";
+  weekday[5]="Friday";
+  weekday[6]="Saturday";
+  dayOfWeekReturn = weekday[(day.getDay()) + i % 7]
+  return dayOfWeekReturn
+}
+$("#DoW_1").append(dayOfWeek(1))
+$("#DoW_2").append(dayOfWeek(2))
+$("#DoW_3").append(dayOfWeek(3))
+$("#DoW_4").append(dayOfWeek(4))
+$("#DoW_5").append(dayOfWeek(5))
 
 var trackTemp = new Array();
 var trackHumidity = new Array();
 var trackWind = new Array();
 var trackIcon = new Array();
 var dayCount = 1
-
 function renderDay(item, index, day){
   if (index === 0){
     trackTemp.push(item.main.temp)
@@ -184,30 +201,25 @@ function renderDay(item, index, day){
     trackHumidity.push(item.main.humidity)
     trackWind.push(item.wind.speed)
     trackIcon.push(item.weather[0].icon)
-
     var forecastHigh = new Array();
     var forecastLow = new Array();
     var forecastHumidity = new Array();
     var forecastWind = new Array();
-
     forecastHigh = Math.round(Math.max.apply(Math, trackTemp.toString().split(",")))
     forecastLow = Math.round(Math.min.apply(Math, trackTemp.toString().split(",")))
     forecastAvg = Math.round(trackTemp.reduce((a,b) => a + b, 0) / trackTemp.length)
     forecastHumidity = Math.round(trackHumidity.reduce((a,b) => a + b, 0) / trackHumidity.length)
     forecastWind = Math.round(trackWind.reduce((a,b) => a + b, 0) / trackWind.length)
-
     console.log('AVG Avg: '+forecastAvg)
     console.log('AVG High: '+forecastHigh)
     console.log('AVG Low: '+forecastLow)
     console.log('AVG Humidity: '+forecastHumidity)
     console.log('AVG Wind: '+forecastWind)
-    
     console.log("#weather_image_day"+dayCount)
     $("#weather_image_day"+dayCount).append('<img src="https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png" />')
     $("#weather_temp_day"+dayCount).append('<h4>'+ forecastAvg +'<span class="temp_unit">° F</span></h4>')
     $("#weather_humidity_day"+dayCount).append(forecastHumidity + '% Humidity')
     $("#weather_wind_day"+dayCount).append(forecastWind+' mph winds') 
-
     trackTemp = []
     trackHumidity = []
     trackWind = []

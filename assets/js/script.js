@@ -20,9 +20,6 @@ function timeFormat(timestamp){
   var minutes = "0" + timestamp.getMinutes()
   return hours + ':' + minutes.substr(-2) + ' ' + AMPM
 }
-function dayFormat(timestamp){
-  
-}
 function clearWeather (){
   $(".weather_city").empty()
   $(".weather_image").empty()
@@ -62,6 +59,9 @@ function weatherSearch(locationInput) {
           }).done(function(uv) {
             $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
           })
+          
+
+
           $.getJSON(openWeatherForecast, { // 5 day Forecast
             lat: weather.coord.lat,
             lon: weather.coord.lon,
@@ -69,7 +69,11 @@ function weatherSearch(locationInput) {
             APPID: API
           }).done(function(forecast) {
             //console.log(forecast)
-            forecast.list.slice(0, 6).forEach(renderDay)
+            forecast.list.slice(0, 8).forEach(renderDay)
+            forecast.list.slice(8, 16).forEach(renderDay)
+            forecast.list.slice(16, 24).forEach(renderDay)
+            forecast.list.slice(24, 32).forEach(renderDay)
+            forecast.list.slice(32, 40).forEach(renderDay)
           })
         })
         
@@ -105,7 +109,11 @@ function weatherSearch(locationInput) {
           APPID: API
         }).done(function(forecast) {
           //console.log(forecast)
-          forecast.list.slice(0, 6).forEach(renderDay)
+          forecast.list.slice(0, 8).forEach(renderDay)
+          forecast.list.slice(8, 16).forEach(renderDay)
+          forecast.list.slice(16, 24).forEach(renderDay)
+          forecast.list.slice(24, 32).forEach(renderDay)
+          forecast.list.slice(32, 40).forEach(renderDay)
         })
       })
     }
@@ -143,22 +151,70 @@ function weatherSearch(locationInput) {
           APPID: API
         }).done(function(forecast) {
           //console.log(forecast)
-          forecast.list.slice(0, 6).forEach(renderDay)
+          forecast.list.slice(0, 8).forEach(renderDay)
+          forecast.list.slice(8, 16).forEach(renderDay)
+          forecast.list.slice(16, 24).forEach(renderDay)
+          forecast.list.slice(24, 32).forEach(renderDay)
+          forecast.list.slice(32, 40).forEach(renderDay)
         })
       })
     })
   }
 }
-function renderDay(item, index){
-  //Wconsole.log(item)
 
-  $("#weather_image_day"+index).append('<img src="https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png" />')
-  $("#weather_temp_day"+index).append('<h4>'+Math.round(item.main.temp)+'<span class="temp_unit">° F</span></h4>')
-  $("#weather_humidity_day"+index).append(Math.round(item.main.humidity)+'% Humidity')
-  $("#weather_wind_day"+index).append(Math.round(item.wind.speed)+' mph winds')
+var trackTemp = new Array();
+var trackHumidity = new Array();
+var trackWind = new Array();
+var trackIcon = new Array();
+var dayCount = 1
+
+function renderDay(item, index, day){
+  if (index === 0){
+    trackTemp.push(item.main.temp)
+    trackHumidity.push(item.main.humidity)
+    trackWind.push(item.wind.speed)
+    trackIcon.push(item.weather[0].icon)
+  } else if (index < 7) {
+    trackTemp.push(item.main.temp)
+    trackHumidity.push(item.main.humidity)
+    trackWind.push(item.wind.speed)
+    trackIcon.push(item.weather[0].icon)
+  } else {
+    trackTemp.push(item.main.temp)
+    trackHumidity.push(item.main.humidity)
+    trackWind.push(item.wind.speed)
+    trackIcon.push(item.weather[0].icon)
+
+    var forecastHigh = new Array();
+    var forecastLow = new Array();
+    var forecastHumidity = new Array();
+    var forecastWind = new Array();
+
+    forecastHigh = Math.round(Math.max.apply(Math, trackTemp.toString().split(",")))
+    forecastLow = Math.round(Math.min.apply(Math, trackTemp.toString().split(",")))
+    forecastAvg = Math.round(trackTemp.reduce((a,b) => a + b, 0) / trackTemp.length)
+    forecastHumidity = Math.round(trackHumidity.reduce((a,b) => a + b, 0) / trackHumidity.length)
+    forecastWind = Math.round(trackWind.reduce((a,b) => a + b, 0) / trackWind.length)
+
+    console.log('AVG Avg: '+forecastAvg)
+    console.log('AVG High: '+forecastHigh)
+    console.log('AVG Low: '+forecastLow)
+    console.log('AVG Humidity: '+forecastHumidity)
+    console.log('AVG Wind: '+forecastWind)
+    
+    console.log("#weather_image_day"+dayCount)
+    $("#weather_image_day"+dayCount).append('<img src="https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png" />')
+    $("#weather_temp_day"+dayCount).append('<h4>'+ forecastAvg +'<span class="temp_unit">° F</span></h4>')
+    $("#weather_humidity_day"+dayCount).append(forecastHumidity + '% Humidity')
+    $("#weather_wind_day"+dayCount).append(forecastWind+' mph winds') 
+
+    trackTemp = []
+    trackHumidity = []
+    trackWind = []
+    dayCount = dayCount+1
+  }
   timestamp = item.dt_txt
   //$("#weather_date_day"+index).append(''+ timestamp.slice(0, 10))
-
 }
 $(document).ready(function(){
   // Detect enter key press
@@ -211,7 +267,11 @@ $(document).ready(function(){
         APPID: API
       }).done(function(forecast) {
         //console.log(forecast)
-        forecast.list.slice(0, 6).forEach(renderDay)
+        forecast.list.slice(0, 8).forEach(renderDay)
+        forecast.list.slice(8, 16).forEach(renderDay)
+        forecast.list.slice(16, 24).forEach(renderDay)
+        forecast.list.slice(24, 32).forEach(renderDay)
+        forecast.list.slice(32, 40).forEach(renderDay)
       })
     })
   })

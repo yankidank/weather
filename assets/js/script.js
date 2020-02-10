@@ -5,6 +5,8 @@ var openWeatherUV = 'https://api.openweathermap.org/data/2.5/uvi?'
 var openWeatherForecast = 'https://api.openweathermap.org/data/2.5/forecast?'
 var locationInput
 var timestamp
+var searchHistory = new Array
+var searchCombine = new Set([])
 
 function timeFormat(timestamp){
   timestamp = new Date(timestamp * 1000);
@@ -29,6 +31,31 @@ function clearWeather (){
   $(".weather_date").empty()
   $(".weather_uv").empty()
 }
+function saveSearch(searchTerm){
+	var searchHistory = new Set()
+	var searchCombine = new Set()
+	var searchTerm = searchTerm.trim() // Remove Whitespace
+	if (searchTerm){
+		console.log('Query '+searchTerm)
+	} else {
+    M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; No criteria provided'})
+	}
+	//localStorage.removeItem(weather_locations);
+	if (JSON.parse(localStorage.getItem('weather_locations'))){
+		searchHistory = JSON.parse(localStorage.getItem('weather_locations'))
+		//searchHistory = ['San Francisco', 'Austin', 'Denver', 'Cleveland']
+		console.log(searchHistory)
+	}
+	// Add the new search term
+	searchHistory = Array.from(searchHistory)
+	//searchHistory.push(searchTerm) // Either push, then remove duplicate on Set conversion
+	searchCombine = new Set(searchHistory)
+	searchCombine.add(searchTerm) // Or use add after Set conversion
+	console.log(searchCombine)
+	//console.log(searchCombine.size)
+	// Save the set locally
+	localStorage.setItem('weather_locations', JSON.stringify(Array.from(searchCombine)))
+}
 function weatherSearch(locationInput) {
   if (locationInput){
     $(':focus').blur()
@@ -43,6 +70,9 @@ function weatherSearch(locationInput) {
           APPID: API
         }).done(function(weather) {
           //console.log(weather)
+          // Add to search history
+          saveSearch(weather.name)
+          // Display current weather          
           $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
           $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
           $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
@@ -83,6 +113,8 @@ function weatherSearch(locationInput) {
         APPID: API
       }).done(function(weather) {
         //console.log(weather)
+        // Add to search history
+        saveSearch(weather.name)
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
@@ -125,6 +157,8 @@ function weatherSearch(locationInput) {
         APPID: API
       }).done(function(weather) {
         //console.log(weather)
+        // Add to search history
+        saveSearch(weather.name)
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
@@ -205,7 +239,7 @@ function renderDay(item, index){
     forecastAvg = Math.round(trackTemp.reduce((a,b) => a + b, 0) / trackTemp.length)
     forecastHumidity = Math.round(trackHumidity.reduce((a,b) => a + b, 0) / trackHumidity.length)
     forecastWind = Math.round(trackWind.reduce((a,b) => a + b, 0) / trackWind.length)
-/*     console.log('AVG Avg: '+forecastAvg)
+/*  console.log('AVG Avg: '+forecastAvg)
     console.log('AVG High: '+forecastHigh)
     console.log('AVG Low: '+forecastLow)
     console.log('AVG Humidity: '+forecastHumidity)
@@ -239,6 +273,7 @@ $(document).ready(function(){
     dayCount = 1
     event.preventDefault()
     locationInput = $.trim($("#searchInput").val())
+    localStorage.setItem(location, locationInput)
     weatherSearch(locationInput)
   })
   // Get the weather by IP on page load
@@ -252,6 +287,22 @@ $(document).ready(function(){
       APPID: API
     }).done(function(weather) {
       //console.log(weather)
+      $('#carousel-wrapper').append($('<div>', {class: 'carousel-item'}))
+      $('.carousel-item').append($('<div>', {class: 'weather-wrapper-current'}))
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_city_current'}))
+      $("#weather_city_current").addClass("weather_city");
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_image_current'}))
+      $("#weather_city_current").addClass("responsive-img weather_image");
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_temp_current'}))
+      $("#weather_city_current").addClass("weather_temp");
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_humidity_current'}))
+      $("#weather_city_current").addClass("weather_humidity");
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_wind_current'}))
+      $("#weather_city_current").addClass("weather_wind");
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_uv_current'}))
+      $("#weather_city_current").addClass("weather_uv");
+      $('.weather-wrapper-current').append($('<div>', {id: 'weather_date_current'}))
+      $("#weather_city_current").addClass("weather_date");
       $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
       $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
       $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
@@ -267,6 +318,7 @@ $(document).ready(function(){
       }).done(function(uv) {
         $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
       })
+      $('.carousel').carousel();
       $.getJSON(openWeatherForecast, { // 5 day Forecast
         lat: weather.coord.lat,
         lon: weather.coord.lon,
@@ -285,4 +337,4 @@ $(document).ready(function(){
 })
 $(document).ready(function(){
   $('.carousel').carousel();
-});
+})

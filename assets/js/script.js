@@ -33,10 +33,9 @@ function weatherSearch(locationInput) {
   if (locationInput){
     $(':focus').blur()
     $("#searchInput").val('')
-    //console.log('Searching: '+locationInput)
+    console.log('Searching: '+locationInput)
     clearWeather()
     if ($.isNumeric(locationInput)){
-      //console.log('Number with '+ locationInput.toString().length+' character(s)')
       if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
         $.getJSON(openWeatherMapCurrent, {
           zip: locationInput,
@@ -59,16 +58,13 @@ function weatherSearch(locationInput) {
           }).done(function(uv) {
             $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
           })
-          
-
-
           $.getJSON(openWeatherForecast, { // 5 day Forecast
             lat: weather.coord.lat,
             lon: weather.coord.lon,
             units: 'imperial',
             APPID: API
           }).done(function(forecast) {
-            //console.log(forecast)
+            console.log(forecast)
             forecast.list.slice(0, 8).forEach(renderDay)
             forecast.list.slice(8, 16).forEach(renderDay)
             forecast.list.slice(16, 24).forEach(renderDay)
@@ -78,7 +74,7 @@ function weatherSearch(locationInput) {
         })
         
       } else {
-        console.log('ERROR: Zip code is not 5 digits')
+        M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Zip code is not 5 digits'})
       }
     } else {
       $.getJSON(openWeatherMapCurrent, {
@@ -108,7 +104,7 @@ function weatherSearch(locationInput) {
           units: 'imperial',
           APPID: API
         }).done(function(forecast) {
-          //console.log(forecast)
+          console.log(forecast)
           forecast.list.slice(0, 8).forEach(renderDay)
           forecast.list.slice(8, 16).forEach(renderDay)
           forecast.list.slice(16, 24).forEach(renderDay)
@@ -118,10 +114,10 @@ function weatherSearch(locationInput) {
       })
     }
   } else {
-    //console.log(locationInput+' Showing by IP location')
+    console.log(locationInput+' Showing by IP location')
     $.getJSON(ipAPIUrl).done(function(location) {
-      console.log('IP: '+location.ip)
-      console.log('City: '+location.city)
+      //console.log('IP: '+location.ip)
+      //console.log('City: '+location.city)
       clearWeather()
       $.getJSON(openWeatherMapCurrent, {
         q: location.city,
@@ -150,7 +146,7 @@ function weatherSearch(locationInput) {
           units: 'imperial',
           APPID: API
         }).done(function(forecast) {
-          //console.log(forecast)
+          console.log(forecast)
           forecast.list.slice(0, 8).forEach(renderDay)
           forecast.list.slice(8, 16).forEach(renderDay)
           forecast.list.slice(16, 24).forEach(renderDay)
@@ -179,13 +175,12 @@ $("#DoW_2").append(dayOfWeek(2))
 $("#DoW_3").append(dayOfWeek(3))
 $("#DoW_4").append(dayOfWeek(4))
 $("#DoW_5").append(dayOfWeek(5))
-
 var trackTemp = new Array();
 var trackHumidity = new Array();
 var trackWind = new Array();
 var trackIcon = new Array();
 var dayCount = 1
-function renderDay(item, index, day){
+function renderDay(item, index){
   if (index === 0){
     trackTemp.push(item.main.temp)
     trackHumidity.push(item.main.humidity)
@@ -210,14 +205,14 @@ function renderDay(item, index, day){
     forecastAvg = Math.round(trackTemp.reduce((a,b) => a + b, 0) / trackTemp.length)
     forecastHumidity = Math.round(trackHumidity.reduce((a,b) => a + b, 0) / trackHumidity.length)
     forecastWind = Math.round(trackWind.reduce((a,b) => a + b, 0) / trackWind.length)
-    console.log('AVG Avg: '+forecastAvg)
+/*     console.log('AVG Avg: '+forecastAvg)
     console.log('AVG High: '+forecastHigh)
     console.log('AVG Low: '+forecastLow)
     console.log('AVG Humidity: '+forecastHumidity)
     console.log('AVG Wind: '+forecastWind)
-    console.log("#weather_image_day"+dayCount)
+    console.log("#weather_image_day"+dayCount)  */
     $("#weather_image_day"+dayCount).append('<img src="https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png" />')
-    $("#weather_temp_day"+dayCount).append('<h4>'+ forecastAvg +'<span class="temp_unit">° F</span></h4>')
+    $("#weather_temp_day"+dayCount).append('<h4><span class="temp_high">'+ forecastHigh +'°</span> <span class="temp_low">'+ forecastLow +'°</span></h4>')
     $("#weather_humidity_day"+dayCount).append(forecastHumidity + '% Humidity')
     $("#weather_wind_day"+dayCount).append(forecastWind+' mph winds') 
     trackTemp = []
@@ -231,25 +226,25 @@ function renderDay(item, index, day){
 $(document).ready(function(){
   // Detect enter key press
   $('#searchInput').keypress(function(event){
+    dayCount = 1
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
       event.preventDefault()
       locationInput = $.trim($("#searchInput").val())
-      //console.log(locationInput)
       weatherSearch(locationInput)
     }
   })
   // Detect click on submit button
   $("#searchButton").click(function(event){
+    dayCount = 1
     event.preventDefault()
     locationInput = $.trim($("#searchInput").val())
-    //console.log(locationInput)
     weatherSearch(locationInput)
   })
   // Get the weather by IP on page load
   $.getJSON(ipAPIUrl).done(function(location) {
-    console.log('IP: '+location.ip)
-    console.log('City: '+location.city)
+/*  console.log('IP: '+location.ip)
+    console.log('City: '+location.city) */
     clearWeather()
     $.getJSON(openWeatherMapCurrent, {
       q: location.city,
@@ -278,7 +273,7 @@ $(document).ready(function(){
         units: 'imperial',
         APPID: API
       }).done(function(forecast) {
-        //console.log(forecast)
+        console.log(forecast)
         forecast.list.slice(0, 8).forEach(renderDay)
         forecast.list.slice(8, 16).forEach(renderDay)
         forecast.list.slice(16, 24).forEach(renderDay)
@@ -288,3 +283,6 @@ $(document).ready(function(){
     })
   })
 })
+$(document).ready(function(){
+  $('.carousel').carousel();
+});

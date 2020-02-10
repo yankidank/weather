@@ -73,13 +73,30 @@ function weatherSearch(locationInput) {
           // Add to search history
           saveSearch(weather.name)
           // Display current weather          
+          $('#carousel-wrapper').empty()
+          $('#carousel-wrapper').append($('<div>', {class: 'carousel-item'}))
+          $('.carousel-item').append($('<div>', {class: 'weather-wrapper-current'}))
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_city_current'}))
+          $("#weather_city_current").addClass("weather_city");
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_image_current'}))
+          $("#weather_city_current").addClass("responsive-img weather_image");
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_temp_current'}))
+          $("#weather_city_current").addClass("weather_temp");
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_humidity_current'}))
+          $("#weather_city_current").addClass("weather_humidity");
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_wind_current'}))
+          $("#weather_city_current").addClass("weather_wind");
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_uv_current'}))
+          $("#weather_city_current").addClass("weather_uv");
+          $('.weather-wrapper-current').append($('<div>', {id: 'weather_date_current'}))
+          $("#weather_city_current").addClass("weather_date");
           $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
           $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
           $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
           $("#weather_humidity_current").append(Math.round(weather.main.humidity)+'% Humidity')
           $("#weather_wind_current").append(Math.round(weather.wind.speed)+' mph winds')
           timestamp = weather.dt
-          $("#weather_date_current").append('Updated: ' + timeFormat(timestamp))
+          $("#weather_date_current").append('Updated: '+timeFormat(timestamp))
           $.getJSON(openWeatherUV, { // UV Index
             lat: weather.coord.lat,
             lon: weather.coord.lon,
@@ -88,6 +105,7 @@ function weatherSearch(locationInput) {
           }).done(function(uv) {
             $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
           })
+          $('.carousel').carousel();
           $.getJSON(openWeatherForecast, { // 5 day Forecast
             lat: weather.coord.lat,
             lon: weather.coord.lon,
@@ -115,6 +133,23 @@ function weatherSearch(locationInput) {
         //console.log(weather)
         // Add to search history
         saveSearch(weather.name)
+        $('#carousel-wrapper').empty()
+        $('#carousel-wrapper').append($('<div>', {class: 'carousel-item'}))
+        $('.carousel-item').append($('<div>', {class: 'weather-wrapper-current'}))
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_city_current'}))
+        $("#weather_city_current").addClass("weather_city");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_image_current'}))
+        $("#weather_city_current").addClass("responsive-img weather_image");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_temp_current'}))
+        $("#weather_city_current").addClass("weather_temp");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_humidity_current'}))
+        $("#weather_city_current").addClass("weather_humidity");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_wind_current'}))
+        $("#weather_city_current").addClass("weather_wind");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_uv_current'}))
+        $("#weather_city_current").addClass("weather_uv");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_date_current'}))
+        $("#weather_city_current").addClass("weather_date");
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
@@ -130,6 +165,7 @@ function weatherSearch(locationInput) {
         }).done(function(uv) {
           $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
         })
+        $('.carousel').carousel();
         $.getJSON(openWeatherForecast, { // 5 day Forecast
           lat: weather.coord.lat,
           lon: weather.coord.lon,
@@ -159,6 +195,23 @@ function weatherSearch(locationInput) {
         //console.log(weather)
         // Add to search history
         saveSearch(weather.name)
+        $('#carousel-wrapper').empty()
+        $('#carousel-wrapper').append($('<div>', {class: 'carousel-item'}))
+        $('.carousel-item').append($('<div>', {class: 'weather-wrapper-current'}))
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_city_current'}))
+        $("#weather_city_current").addClass("weather_city");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_image_current'}))
+        $("#weather_city_current").addClass("responsive-img weather_image");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_temp_current'}))
+        $("#weather_city_current").addClass("weather_temp");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_humidity_current'}))
+        $("#weather_city_current").addClass("weather_humidity");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_wind_current'}))
+        $("#weather_city_current").addClass("weather_wind");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_uv_current'}))
+        $("#weather_city_current").addClass("weather_uv");
+        $('.weather-wrapper-current').append($('<div>', {id: 'weather_date_current'}))
+        $("#weather_city_current").addClass("weather_date");
         $("#weather_city_current").append('<h2>'+weather.name+'</h2>')
         $("#weather_image_current").append('<img src="https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png" />')
         $("#weather_temp_current").append('<h4>'+Math.round(weather.main.temp)+'<span class="temp_unit">° F</span></h4>')
@@ -174,6 +227,7 @@ function weatherSearch(locationInput) {
         }).done(function(uv) {
           $("#weather_uv_current").append('UV Index: '+Math.round(uv.value))
         })
+        $('.carousel').carousel();
         $.getJSON(openWeatherForecast, { // 5 day Forecast
           lat: weather.coord.lat,
           lon: weather.coord.lon,
@@ -287,6 +341,7 @@ $(document).ready(function(){
       APPID: API
     }).done(function(weather) {
       //console.log(weather)
+      $('#carousel-wrapper').empty()
       $('#carousel-wrapper').append($('<div>', {class: 'carousel-item'}))
       $('.carousel-item').append($('<div>', {class: 'weather-wrapper-current'}))
       $('.weather-wrapper-current').append($('<div>', {id: 'weather_city_current'}))

@@ -1,4 +1,5 @@
 var API = '5ec45324b97dfab94d81259ceb9c7461'
+//var API = 'e2edc839ca62628aaaa5c6e58731c07e'
 var ipAPIUrl = 'https://ipapi.co/json/'
 var openWeatherMapCurrent = 'https://api.openweathermap.org/data/2.5/weather'
 var openWeatherUV = 'https://api.openweathermap.org/data/2.5/uvi?'
@@ -77,13 +78,15 @@ function weatherSearch(locationInput) {
     if ($.isNumeric(locationInput)){
       if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
         city = undefined
-        getWeather(city, locationInput)        
+        getWeather(city, locationInput)
+        console.log('getweather call')     
       } else {
         M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Zip code is not 5 digits'})
       }
     } else {
       zip = undefined
       getWeather(locationInput, zip)
+      console.log('getweather call')   
     }
   } else {
     M.toast({html: 'Fetching location by IP'})
@@ -93,6 +96,7 @@ function weatherSearch(locationInput) {
       clearWeather()
       zip = undefined
       getWeather(location.city, zip)
+      console.log('getweather call')   
     })
   }
 }
@@ -166,7 +170,8 @@ if ($(".carousel-item.active").prev()){
     var instance = M.Carousel.getInstance($('.carousel'))
     instance.prev()
     //getWeather(city)
-    weatherSearch(location.city)
+    //weatherSearch(location.city)
+    //console.log('weatherSearch')   
   })
 } else {
   $(".carouselLeft").hide()
@@ -179,6 +184,8 @@ if ($(".carousel-item.active").next()){
     var instance = M.Carousel.getInstance($('.carousel'))
     instance.next()
     //getWeather(city)
+    //weatherSearch(location.city)
+    //console.log('weatherSearch') 
   })
 } else {
   $(".carouselRight").hide()
@@ -186,13 +193,13 @@ if ($(".carousel-item.active").next()){
 function dayOfWeek(i){
   var day=new Date();
   var weekday=new Array(7);
-  weekday[0]="Sunday";
   weekday[1]="Monday";
   weekday[2]="Tuesday";
   weekday[3]="Wednesday";
   weekday[4]="Thursday";
   weekday[5]="Friday";
   weekday[6]="Saturday";
+  weekday[7]="Sunday";
   dayOfWeekReturn = weekday[(day.getDay()) + i % 7]
   return dayOfWeekReturn
 }
@@ -254,16 +261,20 @@ $(document).ready(function(){
     searchHistory = JSON.parse(localStorage.getItem('weather_locations'))
     //console.log(searchHistory)
     //searchHistory = ['San Francisco', 'Austin', 'Denver', 'Cleveland']
+    // Build Carousel items
     for (let nameFetch of Array.from(searchHistory).reverse()) {
       weatherSearch(nameFetch)
+      console.log('weatherSearch')   
     }
 	} else {
     // Get the weather by IP on page load
+    // Build Carousel items
     $(".carouselNav").hide()
     $.getJSON(ipAPIUrl).done(function(location) {
       //console.log('IP: '+location.ip)
       //console.log('City: '+location.city)
       weatherSearch(location.city)
+      console.log('weatherSearch')   
     })
   }
   // Detect enter key press
@@ -275,6 +286,7 @@ $(document).ready(function(){
       $(".carouselNav").hide()
       locationInput = $.trim($("#searchInput").val())
       weatherSearch(locationInput)
+      console.log('weatherSearch') 
     }
   })
   // Detect click on submit button
@@ -284,6 +296,7 @@ $(document).ready(function(){
     $(".carouselNav").hide()
     locationInput = $.trim($("#searchInput").val())
     weatherSearch(locationInput)
+    console.log('weatherSearch') 
   })
 })
 function getWeather(city, zip){
@@ -303,34 +316,45 @@ function getWeather(city, zip){
       APPID: API
     }
   }
-  $.getJSON(openWeatherMapCurrent, openWeatherMapSettings).done(function(weather) {
-    //console.log(weather)
-    city = weather.name
-    city = city.toLowerCase().replace(/\s/g, '')
-    getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
-    $.getJSON(openWeatherUV, { // UV Index
-      lat: weather.coord.lat,
-      lon: weather.coord.lon,
-      units: 'imperial',
-      APPID: API
-    }).done(function(uv) {
-      $("#weather_uv_"+city).empty()
-      $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
+  function jsonCall() {
+    $.getJSON(openWeatherMapCurrent, openWeatherMapSettings).done(function(weather) {
+      //console.log(weather)
+      city = weather.name
+      city = city.toLowerCase().replace(/\s/g, '')
+      getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
+      $.getJSON(openWeatherUV, { // UV Index
+        lat: weather.coord.lat,
+        lon: weather.coord.lon,
+        units: 'imperial',
+        APPID: API
+      }).done(function(uv) {
+        $("#weather_uv_"+city).empty()
+        $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
+      })
+      $.getJSON(openWeatherForecast, { // 5 day Forecast
+        lat: weather.coord.lat,
+        lon: weather.coord.lon,
+        units: 'imperial',
+        APPID: API
+      }).done(function(forecast) {
+        function forecastRender(){
+          forecast.list.slice(0, 8).forEach(renderDay)
+          forecast.list.slice(8, 16).forEach(renderDay)
+          forecast.list.slice(16, 24).forEach(renderDay)
+          forecast.list.slice(24, 32).forEach(renderDay)
+          forecast.list.slice(32, 40).forEach(renderDay)
+          $(".forecast-title").html('5 Day Forecast for '+weather.name)
+        }
+        setTimeout(function(){
+          forecastRender()
+        }, 750)
+      })
+      saveSearch(weather.name)
+
     })
-    $.getJSON(openWeatherForecast, { // 5 day Forecast
-      lat: weather.coord.lat,
-      lon: weather.coord.lon,
-      units: 'imperial',
-      APPID: API
-    }).done(function(forecast) {
-      forecast.list.slice(0, 8).forEach(renderDay)
-      forecast.list.slice(8, 16).forEach(renderDay)
-      forecast.list.slice(16, 24).forEach(renderDay)
-      forecast.list.slice(24, 32).forEach(renderDay)
-      forecast.list.slice(32, 40).forEach(renderDay)
-      $(".forecast-title").html('5 Day Forecast for '+weather.name)
-    })
-    saveSearch(weather.name)
-  })
+  }
+  setTimeout(function(){
+    jsonCall()
+  }, 1500)
 }
 

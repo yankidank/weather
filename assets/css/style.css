@@ -6,10 +6,6 @@ body {
 nav {
 	background:#000000d9;
 }
-.removeLink a {
-	color:#000;
-	opacity:1;
-}
 .carouselNav {
 	font-family: 'Nanum Gothic', sans-serif;
     font-size: 5rem;
@@ -27,12 +23,22 @@ nav {
 	cursor:pointer;
 }
 .carouselLeft {
-    top: 100px;
-    left: 100px;
+    top: 37%;
+    left: 120px;
 }
 .carouselRight {
-    top: 100px;
-    right: 100px;
+	top: 37%;
+    right: 120px;
+}
+@media only screen and (max-width: 800px) {
+	.carouselLeft {
+		top: 37%;
+		left: 40px;
+	}
+	.carouselRight {
+		top: 37%;
+		right: 40px;
+	}
 }
 #weather_temp_current h4 {
 	font-size:3.8rem;

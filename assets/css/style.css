@@ -6,8 +6,33 @@ body {
 nav {
 	background:#000000d9;
 }
-#weather_image_current img {
-	
+.removeLink a {
+	color:#000;
+	opacity:1;
+}
+.carouselNav {
+	font-family: 'Nanum Gothic', sans-serif;
+    font-size: 5rem;
+    color: #fff;
+    opacity: 0.8;
+    margin: 0;
+	position: absolute;
+	z-index:999;
+}
+.carouselNav a {
+	color:#fff;
+	border:none;
+}
+.carouselNav a:hover {
+	cursor:pointer;
+}
+.carouselLeft {
+    top: 100px;
+    left: 100px;
+}
+.carouselRight {
+    top: 100px;
+    right: 100px;
 }
 #weather_temp_current h4 {
 	font-size:3.8rem;
@@ -55,9 +80,6 @@ h5 {
 }
 #weather_city_current h4 {
 	margin-top:24px;
-}
-.weather_humidity,.weather_wind,.weather_uv,.weather_date {
-	
 }
 #forecast-container {
 	margin-bottom:20px;

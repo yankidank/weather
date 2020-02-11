@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link href="https://fonts.googleapis.com/css?family=Material+Icons%7CLato%7CNanum+Myeongjo&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons%7CLato%7CNanum+Gothic&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 	<link href="./assets/css/style.css" rel="stylesheet" />
 </head>
@@ -23,10 +23,12 @@
 	</nav>
 	<div class="parallax-container">
 		<div class="section no-pad-bot no-pad-top">
+			<div class="carouselNav carouselLeft"><a onclick="slidePrev()">&lt;</a></div>
 			<div class="carousel carousel-slider center" id="carousel-wrapper"></div>
+			<div class="carouselNav carouselRight"><a onclick="slideNext();">&gt;</a></div>
 		</div>
 		<div class="parallax" id="weatherBG">
-			<img src="./assets/img/window_rain.jpg" alt="" style="transform: translate3d(-50%, 341.231px, 0px); opacity: 0.25;">
+			<img src="./assets/img/window_rain.jpg" alt="" style="transform: translate3d(-50%, 341.231px, 0px); opacity: 0.27;">
 		</div>
 	</div>
 	<div class="row forecast-row">

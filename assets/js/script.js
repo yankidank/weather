@@ -8,7 +8,6 @@ var timestamp
 var searchHistory = new Array
 var searchCombine = new Set([])
 var city
-
 function timeFormat(timestamp){
   timestamp = new Date(timestamp * 1000);
   var month = timestamp.getMonth() // coming back as 1 instead of 2 ?
@@ -225,6 +224,14 @@ $(window).resize(function(){
     }
   )
 })
+function slidePrev(){
+  var instance = M.Carousel.getInstance($('.carousel'));
+  instance.prev();
+}
+function slideNext(){
+  var instance = M.Carousel.getInstance($('.carousel'));
+  instance.next();
+}
 function dayOfWeek(i){
   var day=new Date();
   var weekday=new Array(7);

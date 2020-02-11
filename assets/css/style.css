@@ -10,25 +10,26 @@ nav {
 	font-family: 'Nanum Gothic', sans-serif;
     font-size: 5rem;
     color: #fff;
-    opacity: 0.8;
+	opacity: 0.75;
+	text-shadow:2px 3px 6px #000;
     margin: 0;
 	position: absolute;
 	z-index:999;
 }
-.carouselNav a {
+.carouselNav:hover {
 	color:#fff;
-	border:none;
-}
-.carouselNav a:hover {
+	opacity:1;
+	text-shadow:2px 3px 6px #000;
 	cursor:pointer;
 }
+
 .carouselLeft {
     top: 37%;
-    left: 120px;
+    left: 100px;
 }
 .carouselRight {
 	top: 37%;
-    right: 120px;
+    right: 100px;
 }
 @media only screen and (max-width: 800px) {
 	.carouselLeft {

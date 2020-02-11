@@ -9,6 +9,7 @@ var searchHistory = new Array
 var searchCombine = new Set([])
 var city
 var zip
+var navCity
 function timeFormat(timestamp){
   timestamp = new Date(timestamp * 1000);
   var month = timestamp.getMonth() // coming back as 1 instead of 2 ?
@@ -34,8 +35,9 @@ function clearWeather (){
   $(".weather_uv").empty()
 }
 function clearCities (){
+  confirm("Remove search history?")
   localStorage.removeItem("weather_locations");
-  console.log('localStorage removed')
+  M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">EMPTIED</span>&nbsp; No stored cities'})
 }
 function saveSearch(searchTerm){
 	var searchHistory = new Set()
@@ -44,25 +46,34 @@ function saveSearch(searchTerm){
 	if (!searchTerm){
     M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; No criteria provided'})
   }
-	//localStorage.removeItem(weather_locations);
 	if (JSON.parse(localStorage.getItem('weather_locations'))){
 		searchHistory = JSON.parse(localStorage.getItem('weather_locations'))
 		//searchHistory = ['San Francisco', 'Austin', 'Denver', 'Cleveland']
 	}
 	// Add the new search term
-	searchHistory = Array.from(searchHistory)
+  searchHistory = Array.from(searchHistory)
+  if (searchHistory.includes(searchTerm)){
+    //M.toast({html: ''+searchTerm+' already stored'})
+  } else {
+    M.toast({html: '<span style="color:#15a548;font-weight:bold;padding-right:5px;">Saved</span>&nbsp; '+searchTerm+' Added'})
+  }
 	//searchHistory.push(searchTerm) // Either push, then remove duplicate on Set conversion
 	searchCombine = new Set(searchHistory)
   searchCombine.add(searchTerm) // Or use add after Set conversion
-	//console.log(searchCombine.size) // .size is .length for Sets
-	localStorage.setItem('weather_locations', JSON.stringify(Array.from(searchCombine)))
+  //console.log(searchCombine.size) // .size is .length for Sets
+  if (searchCombine.size > 1){
+    $(".carouselNav").show()
+  } else {
+    $(".carouselNav").hide()
+  }
+  console.log(searchCombine)
+  localStorage.setItem('weather_locations', JSON.stringify(Array.from(searchCombine)))
 }
 function weatherSearch(locationInput) {
   if (locationInput){
     $(':focus').blur()
     $("#searchInput").val('')
     clearWeather()
-    
     if ($.isNumeric(locationInput)){
       if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
         city = undefined
@@ -86,6 +97,7 @@ function weatherSearch(locationInput) {
   }
 }
 if (JSON.parse(localStorage.getItem('weather_locations'))){
+  $(".carouselNav").show()
   searchHistory = JSON.parse(localStorage.getItem('weather_locations'))
   //searchHistory = ['San Francisco', 'Austin', 'Denver', 'Cleveland']
   for (let nameFetch of Array.from(searchHistory).reverse()) {
@@ -144,16 +156,27 @@ $(window).resize(function(){
     }
   )
 })
-function slidePrev(city){
-  var instance = M.Carousel.getInstance($('.carousel'));
-  instance.prev();
-  getWeather(city)
-}
-function slideNext(city){
-  var instance = M.Carousel.getInstance($('.carousel'));
-  instance.next();
-  getWeather(city)
-}
+$(".carouselLeft").click(function(){
+  var instance = M.Carousel.getInstance($('.carousel'))
+  instance.prev()
+  if (city){
+    getWeather(city)
+    // weatherSearch(city)
+  } else {
+    //M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Only one city has been saved'})
+  }
+})
+$(".carouselRight").click(function(){
+  var instance = M.Carousel.getInstance($('.carousel'))
+  instance.next()
+  console.log(instance)
+  if (city){
+    getWeather(city)
+    // weatherSearch(city)
+  } else {
+    //M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Only one city has been saved'})
+  }
+})
 function dayOfWeek(i){
   var day=new Date();
   var weekday=new Array(7);
@@ -220,54 +243,62 @@ function renderDay(item, index){
   timestamp = item.dt_txt
 }
 $(document).ready(function(){
-  // Get the weather by IP on page load
-  $.getJSON(ipAPIUrl).done(function(location) {
-/*  console.log('IP: '+location.ip)
-    console.log('City: '+location.city) */
-    clearWeather()
-    getWeather(location.city)
-  })
+  //console.log(JSON.parse(localStorage.getItem('weather_locations')))
+  if (JSON.parse(localStorage.getItem('weather_locations'))){
+    searchHistory = JSON.parse(localStorage.getItem('weather_locations'))
+    //console.log(searchHistory)
+    //searchHistory = ['San Francisco', 'Austin', 'Denver', 'Cleveland']
+    for (let nameFetch of Array.from(searchHistory).reverse()) {
+      weatherSearch(nameFetch)
+    }
+	} else {
+    // Get the weather by IP on page load
+    $(".carouselNav").hide()
+    $.getJSON(ipAPIUrl).done(function(location) {
+      //console.log('IP: '+location.ip)
+      //console.log('City: '+location.city)
+      clearWeather()
+      weatherSearch(location.city)
+    })
+  }
   // Detect enter key press
   $('#searchInput').keypress(function(event){
     dayCount = 1
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
       event.preventDefault()
+      $(".carouselNav").hide()
       locationInput = $.trim($("#searchInput").val())
       weatherSearch(locationInput)
-      if ($.isNumeric(locationInput)){
-        if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
-          city = undefined
-          getWeather(city, locationInput)
-        }
-      } else {
-        getWeather(locationInput)
-      }
     }
   })
   // Detect click on submit button
   $("#searchButton").click(function(event){
     dayCount = 1
     event.preventDefault()
+    $(".carouselNav").hide()
     locationInput = $.trim($("#searchInput").val())
     weatherSearch(locationInput)
-    if ($.isNumeric(locationInput)){
-      if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
-        city = undefined
-        getWeather(city, locationInput)
-      }
-    } else {
-      getWeather(locationInput)
-    }
   })
 })
 function getWeather(city, zip){
-  $.getJSON(openWeatherMapCurrent, {
-    q: city,
-    zip: zip,
-    units: 'imperial',
-    APPID: API
-  }).done(function(weather) {
+  var openWeatherMapSettings
+  if(zip){
+    openWeatherMapSettings = {
+      zip: zip,
+      units: 'imperial',
+      APPID: API
+    }
+  } else if (!city && !zip) {
+    M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Missing city or zip'})
+  } else {
+    openWeatherMapSettings = {
+      q: city,
+      units: 'imperial',
+      APPID: API
+    }
+  }
+  $.getJSON(openWeatherMapCurrent, openWeatherMapSettings).done(function(weather) {
     //console.log(weather)
     city = weather.name
     city = city.toLowerCase().replace(/\s/g, '')
@@ -287,12 +318,13 @@ function getWeather(city, zip){
       units: 'imperial',
       APPID: API
     }).done(function(forecast) {
-      $(".forecast-title").html('5 Day Forecast for '+weather.name)
       forecast.list.slice(0, 8).forEach(renderDay)
       forecast.list.slice(8, 16).forEach(renderDay)
       forecast.list.slice(16, 24).forEach(renderDay)
       forecast.list.slice(24, 32).forEach(renderDay)
       forecast.list.slice(32, 40).forEach(renderDay)
+      $(".forecast-title").html('5 Day Forecast for '+weather.name)
     })
+    saveSearch(weather.name)
   })
 }

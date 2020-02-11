@@ -66,7 +66,7 @@ function saveSearch(searchTerm){
   } else {
     $(".carouselNav").hide()
   }
-  console.log(searchCombine)
+  //console.log(searchCombine)
   localStorage.setItem('weather_locations', JSON.stringify(Array.from(searchCombine)))
 }
 function weatherSearch(locationInput) {
@@ -136,6 +136,7 @@ function getCarousel(name, icon, temp, humidity, wind, timestamp){
   $(document).ready(function(){
     $('.carousel').carousel(
       {
+        numVisible: 3,
         dist: 110,
         padding: 0,
         fullWidth: false,
@@ -148,6 +149,7 @@ function getCarousel(name, icon, temp, humidity, wind, timestamp){
 $(window).resize(function(){
   $('.carousel').carousel(
     {
+      numVisible: 3,
       dist: 110,
       padding: 0,
       fullWidth: false,
@@ -156,27 +158,31 @@ $(window).resize(function(){
     }
   )
 })
-$(".carouselLeft").click(function(){
-  var instance = M.Carousel.getInstance($('.carousel'))
-  instance.prev()
-  if (city){
-    getWeather(city)
-    // weatherSearch(city)
-  } else {
-    //M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Only one city has been saved'})
-  }
-})
-$(".carouselRight").click(function(){
-  var instance = M.Carousel.getInstance($('.carousel'))
-  instance.next()
-  console.log(instance)
-  if (city){
-    getWeather(city)
-    // weatherSearch(city)
-  } else {
-    //M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Only one city has been saved'})
-  }
-})
+if ($(".carousel-item.active").prev()){
+  $(".carouselLeft").show()
+  $(".carouselLeft").click(function(){
+/*  var prevDiv = $(".carousel-item.active").prev()
+    navCity = prevDiv.attr('id').substr(5) */
+    var instance = M.Carousel.getInstance($('.carousel'))
+    instance.prev()
+    //getWeather(city)
+    weatherSearch(location.city)
+  })
+} else {
+  $(".carouselLeft").hide()
+}
+if ($(".carousel-item.active").next()){
+  $(".carouselRight").click(function(){
+    $(".carouselRight").show()
+/*  var nextDiv = $(".carousel-item.active").next()
+    navCity = nextDiv.attr('id').substr(5) */
+    var instance = M.Carousel.getInstance($('.carousel'))
+    instance.next()
+    //getWeather(city)
+  })
+} else {
+  $(".carouselRight").hide()
+}
 function dayOfWeek(i){
   var day=new Date();
   var weekday=new Array(7);
@@ -257,7 +263,6 @@ $(document).ready(function(){
     $.getJSON(ipAPIUrl).done(function(location) {
       //console.log('IP: '+location.ip)
       //console.log('City: '+location.city)
-      clearWeather()
       weatherSearch(location.city)
     })
   }
@@ -328,3 +333,4 @@ function getWeather(city, zip){
     saveSearch(weather.name)
   })
 }
+

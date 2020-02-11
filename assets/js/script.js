@@ -8,6 +8,7 @@ var timestamp
 var searchHistory = new Array
 var searchCombine = new Set([])
 var city
+var zip
 function timeFormat(timestamp){
   timestamp = new Date(timestamp * 1000);
   var month = timestamp.getMonth() // coming back as 1 instead of 2 ?
@@ -31,6 +32,10 @@ function clearWeather (){
   $(".weather_wind").empty()
   $(".weather_date").empty()
   $(".weather_uv").empty()
+}
+function clearCities (){
+  localStorage.removeItem("weather_locations");
+  console.log('localStorage removed')
 }
 function saveSearch(searchTerm){
 	var searchHistory = new Set()
@@ -57,75 +62,17 @@ function weatherSearch(locationInput) {
     $(':focus').blur()
     $("#searchInput").val('')
     clearWeather()
+    
     if ($.isNumeric(locationInput)){
       if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
-        $.getJSON(openWeatherMapCurrent, {
-          zip: locationInput,
-          units: 'imperial',
-          APPID: API
-        }).done(function(weather) {
-          saveSearch(weather.name)
-          city = weather.name
-          city = city.toLowerCase().replace(/\s/g, '')
-          getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
-          $.getJSON(openWeatherUV, { // UV Index
-            lat: weather.coord.lat,
-            lon: weather.coord.lon,
-            units: 'imperial',
-            APPID: API
-          }).done(function(uv) {
-            $("#weather_uv_"+city).empty()
-            $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
-          })
-          $.getJSON(openWeatherForecast, { // 5 day Forecast
-            lat: weather.coord.lat,
-            lon: weather.coord.lon,
-            units: 'imperial',
-            APPID: API
-          }).done(function(forecast) {
-            forecast.list.slice(0, 8).forEach(renderDay)
-            forecast.list.slice(8, 16).forEach(renderDay)
-            forecast.list.slice(16, 24).forEach(renderDay)
-            forecast.list.slice(24, 32).forEach(renderDay)
-            forecast.list.slice(32, 40).forEach(renderDay)
-          })
-        })
-        
+        city = undefined
+        getWeather(city, locationInput)        
       } else {
         M.toast({html: '<span style="color:#ec6e4c;font-weight:bold;padding-right:5px;">ERROR</span>&nbsp; Zip code is not 5 digits'})
       }
     } else {
-      $.getJSON(openWeatherMapCurrent, {
-        q: locationInput,
-        units: 'imperial',
-        APPID: API
-      }).done(function(weather) {
-        saveSearch(weather.name)
-        city = weather.name
-        city = city.toLowerCase().replace(/\s/g, '')
-        getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
-        $.getJSON(openWeatherUV, { // UV Index
-          lat: weather.coord.lat,
-          lon: weather.coord.lon,
-          units: 'imperial',
-          APPID: API
-        }).done(function(uv) {
-          $("#weather_uv_"+city).empty()
-          $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
-        })
-        $.getJSON(openWeatherForecast, { // 5 day Forecast
-          lat: weather.coord.lat,
-          lon: weather.coord.lon,
-          units: 'imperial',
-          APPID: API
-        }).done(function(forecast) {
-          forecast.list.slice(0, 8).forEach(renderDay)
-          forecast.list.slice(8, 16).forEach(renderDay)
-          forecast.list.slice(16, 24).forEach(renderDay)
-          forecast.list.slice(24, 32).forEach(renderDay)
-          forecast.list.slice(32, 40).forEach(renderDay)
-        })
-      })
+      zip = undefined
+      getWeather(locationInput, zip)
     }
   } else {
     M.toast({html: 'Fetching location by IP'})
@@ -133,35 +80,8 @@ function weatherSearch(locationInput) {
       //console.log('IP: '+location.ip)
       //console.log('City: '+location.city)
       clearWeather()
-      $.getJSON(openWeatherMapCurrent, {
-        q: location.city,
-        units: 'imperial',
-        APPID: API
-      }).done(function(weather) {
-        saveSearch(weather.name)
-        getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
-        $.getJSON(openWeatherUV, { // UV Index
-          lat: weather.coord.lat,
-          lon: weather.coord.lon,
-          units: 'imperial',
-          APPID: API
-        }).done(function(uv) {
-          $("#weather_uv_"+city).empty()
-          $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
-        })
-        $.getJSON(openWeatherForecast, { // 5 day Forecast
-          lat: weather.coord.lat,
-          lon: weather.coord.lon,
-          units: 'imperial',
-          APPID: API
-        }).done(function(forecast) {
-          forecast.list.slice(0, 8).forEach(renderDay)
-          forecast.list.slice(8, 16).forEach(renderDay)
-          forecast.list.slice(16, 24).forEach(renderDay)
-          forecast.list.slice(24, 32).forEach(renderDay)
-          forecast.list.slice(32, 40).forEach(renderDay)
-        })
-      })
+      zip = undefined
+      getWeather(location.city, zip)
     })
   }
 }
@@ -224,13 +144,15 @@ $(window).resize(function(){
     }
   )
 })
-function slidePrev(){
+function slidePrev(city){
   var instance = M.Carousel.getInstance($('.carousel'));
   instance.prev();
+  getWeather(city)
 }
-function slideNext(){
+function slideNext(city){
   var instance = M.Carousel.getInstance($('.carousel'));
   instance.next();
+  getWeather(city)
 }
 function dayOfWeek(i){
   var day=new Date();
@@ -296,9 +218,15 @@ function renderDay(item, index){
     dayCount = dayCount+1
   }
   timestamp = item.dt_txt
-  //$("#weather_date_day"+index).append(''+ timestamp.slice(0, 10))
 }
 $(document).ready(function(){
+  // Get the weather by IP on page load
+  $.getJSON(ipAPIUrl).done(function(location) {
+/*  console.log('IP: '+location.ip)
+    console.log('City: '+location.city) */
+    clearWeather()
+    getWeather(location.city)
+  })
   // Detect enter key press
   $('#searchInput').keypress(function(event){
     dayCount = 1
@@ -307,6 +235,14 @@ $(document).ready(function(){
       event.preventDefault()
       locationInput = $.trim($("#searchInput").val())
       weatherSearch(locationInput)
+      if ($.isNumeric(locationInput)){
+        if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
+          city = undefined
+          getWeather(city, locationInput)
+        }
+      } else {
+        getWeather(locationInput)
+      }
     }
   })
   // Detect click on submit button
@@ -315,42 +251,48 @@ $(document).ready(function(){
     event.preventDefault()
     locationInput = $.trim($("#searchInput").val())
     weatherSearch(locationInput)
-  })
-  // Get the weather by IP on page load
-  $.getJSON(ipAPIUrl).done(function(location) {
-/*  console.log('IP: '+location.ip)
-    console.log('City: '+location.city) */
-    clearWeather()
-    $.getJSON(openWeatherMapCurrent, {
-      q: location.city,
-      units: 'imperial',
-      APPID: API
-    }).done(function(weather) {
-      //console.log(weather)
-      city = weather.name
-      city = city.toLowerCase().replace(/\s/g, '')
-      getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
-      $.getJSON(openWeatherUV, { // UV Index
-        lat: weather.coord.lat,
-        lon: weather.coord.lon,
-        units: 'imperial',
-        APPID: API
-      }).done(function(uv) {
-        $("#weather_uv_"+city).empty()
-        $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
-      })
-      $.getJSON(openWeatherForecast, { // 5 day Forecast
-        lat: weather.coord.lat,
-        lon: weather.coord.lon,
-        units: 'imperial',
-        APPID: API
-      }).done(function(forecast) {
-        forecast.list.slice(0, 8).forEach(renderDay)
-        forecast.list.slice(8, 16).forEach(renderDay)
-        forecast.list.slice(16, 24).forEach(renderDay)
-        forecast.list.slice(24, 32).forEach(renderDay)
-        forecast.list.slice(32, 40).forEach(renderDay)
-      })
-    })
+    if ($.isNumeric(locationInput)){
+      if (locationInput.toString().length === 5 && $.isNumeric(locationInput)){
+        city = undefined
+        getWeather(city, locationInput)
+      }
+    } else {
+      getWeather(locationInput)
+    }
   })
 })
+function getWeather(city, zip){
+  $.getJSON(openWeatherMapCurrent, {
+    q: city,
+    zip: zip,
+    units: 'imperial',
+    APPID: API
+  }).done(function(weather) {
+    //console.log(weather)
+    city = weather.name
+    city = city.toLowerCase().replace(/\s/g, '')
+    getCarousel(weather.name, weather.weather[0].icon, weather.main.temp, weather.main.humidity, weather.wind.speed, weather.dt)
+    $.getJSON(openWeatherUV, { // UV Index
+      lat: weather.coord.lat,
+      lon: weather.coord.lon,
+      units: 'imperial',
+      APPID: API
+    }).done(function(uv) {
+      $("#weather_uv_"+city).empty()
+      $("#weather_uv_"+city).append('UV Index: '+Math.round(uv.value))
+    })
+    $.getJSON(openWeatherForecast, { // 5 day Forecast
+      lat: weather.coord.lat,
+      lon: weather.coord.lon,
+      units: 'imperial',
+      APPID: API
+    }).done(function(forecast) {
+      $(".forecast-title").html('5 Day Forecast for '+weather.name)
+      forecast.list.slice(0, 8).forEach(renderDay)
+      forecast.list.slice(8, 16).forEach(renderDay)
+      forecast.list.slice(16, 24).forEach(renderDay)
+      forecast.list.slice(24, 32).forEach(renderDay)
+      forecast.list.slice(32, 40).forEach(renderDay)
+    })
+  })
+}

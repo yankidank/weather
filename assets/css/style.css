@@ -1,7 +1,7 @@
 body {
 	font-size:1.1rem;
 	color:#31404b;
-	background:rgb(233, 233, 233);
+	background:rgb(208, 208, 208);
 }
 nav {
 	background:#000000d9;
@@ -95,7 +95,7 @@ h5 {
 }
 .forecast-title {
 	font-weight: 300;
-	padding:125px 0;
+	padding:125px 25px;
 	text-align: center;
 }
 .last-updated {
@@ -134,4 +134,10 @@ h5 {
 }
 .page-footer a:hover {
 	text-decoration:underline;
+}
+.footer-copyright .container a{
+	font-size:1rem;
+}
+.footer-copyright .container a:hover{
+	cursor:pointer;
 }
